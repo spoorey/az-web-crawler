@@ -52,7 +52,7 @@ for city in cities:
 
         articles = extract_articles(data, threeMonthsAgo, 50, articles)
         created = get_first_created(data)
-        if (len(articles)>50) or (created < threeMonthsAgo):
+        if (len(articles)>200) or (created < threeMonthsAgo):
             print('found ' + str(len(articles)) + ' articles since ' + threeMonthsAgo.isoformat())
             break
 
