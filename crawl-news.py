@@ -2,6 +2,8 @@ import json
 import requests
 import datetime
 import time
+import config
+from config import get_cache_path
 
 def get_first_created(data):
     first = 0
@@ -28,11 +30,9 @@ file = open('./cache/cities.json')
 cities = json.load(file)
 cities = cities['data']
 
-basePath = './cache/cities/'
 baseUrl = 'https://www.aargauerzeitung.ch/__node__/__api__/gemeinde/'
 threeMonthsAgo = datetime.datetime.today() - datetime.timedelta(3*365/12)
 print(threeMonthsAgo)
-
 
 for city in cities:
     articles = []
@@ -46,7 +46,7 @@ for city in cities:
         url = baseUrl + str(city['id']) + '/seite/' + str(page)
         print(url)
 
-        filePath = basePath + str(city['id']) + '-' + city['urlpart'] + '.json'
+        filePath = get_cache_path(city)
         r = requests.get(url, {})
         data: dict = r.json()
 
