@@ -4,6 +4,8 @@ import datetime
 import time
 import config
 from config import get_cache_path
+from config import maxArticlesPerCity
+from config import filePaths
 
 def get_first_created(data):
     first = 0
@@ -26,7 +28,7 @@ def extract_articles(data, minTimestamp, maxAmount, articles):
     return articles
 
 
-file = open('./cache/cities.json')
+file = open(filePaths['cities'])
 cities = json.load(file)
 cities = cities['data']
 
@@ -39,20 +41,21 @@ for city in cities:
 
     page = 0
     print('Loading ' + city['name'])
-    while (True and len(articles)<=200):
+    while (True and len(articles)<=maxArticlesPerCity):
         # load next page
         page += 1
         time.sleep(1)
         url = baseUrl + str(city['id']) + '/seite/' + str(page)
         print(url)
+        print(str(len(articles)) + ' articles so far')
 
         filePath = get_cache_path(city)
         r = requests.get(url, {})
         data: dict = r.json()
 
-        articles = extract_articles(data, threeMonthsAgo, 50, articles)
+        articles = extract_articles(data, threeMonthsAgo, maxArticlesPerCity, articles)
         created = get_first_created(data)
-        if (len(articles)>200) or (created < threeMonthsAgo):
+        if (len(articles)>maxArticlesPerCity) or (created < threeMonthsAgo):
             print('found ' + str(len(articles)) + ' articles since ' + threeMonthsAgo.isoformat())
             break
 
