@@ -1,10 +1,15 @@
 import json
+import config
+from config import get_cache_path
+from config import filePaths
 
-with open('./cache/cities.json', 'r') as file:
+with open(filePaths['cities'], 'r') as file:
     cities = json.load(file)
 
-data = []
+data = {}
 for city in cities['data']:
-    print(city['name'])
-    filePath = basePath + str(city['id']) + '-' + city['urlpart'] + '.json'
-    print(filePath)
+    filePath = get_cache_path(city)
+    with open(filePath) as cityFile:
+        cityData = json.load(cityFile)
+        print(city['name'] + ' ' + str(len(cityData)))
+        data[int(city['zips'][0])] = len(cityData)
