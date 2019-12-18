@@ -36,7 +36,9 @@ baseUrl = 'https://www.aargauerzeitung.ch/__node__/__api__/gemeinde/'
 threeMonthsAgo = datetime.datetime.today() - datetime.timedelta(3*365/12)
 print(threeMonthsAgo)
 
+i = 0
 for city in cities:
+    i = i+1
     articles = []
 
     page = 0
@@ -44,10 +46,9 @@ for city in cities:
     while (True and len(articles)<=maxArticlesPerCity):
         # load next page
         page += 1
-        time.sleep(1)
+        time.sleep(0.5)
         url = baseUrl + str(city['id']) + '/seite/' + str(page)
-        print(url)
-        print(str(len(articles)) + ' articles so far')
+        print('('+ str(i) +'/' + str(len(cities)) + ') ' + city['name'])
 
         filePath = get_cache_path(city)
         r = requests.get(url, {})
