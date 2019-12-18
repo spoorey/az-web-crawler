@@ -1,5 +1,6 @@
 filePaths = dict(
     cities='./cache/cities.json',
+    articlesPerCity='./cache/articles-per-city.json',
     articles='./cache/cities/'
 )
 
