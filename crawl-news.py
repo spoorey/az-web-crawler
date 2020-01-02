@@ -46,6 +46,7 @@ for city in cities:
     while (True and len(articles)<=maxArticlesPerCity):
         # load next page
         page += 1
+        print('page ' + str(page))
         time.sleep(0.5)
         url = baseUrl + str(city['id']) + '/seite/' + str(page)
 

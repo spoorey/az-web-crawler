@@ -30,7 +30,6 @@ Then open `vendor/map.html` in your browser.
 ## File structure
 ### `cache` directory
 This directory contains cached versions of all the data required by the az api.
-
 ### `data` directory
 This contains all data required to display the map (`vendor/map.html`). This includes a js script that was used to assign the city names to the vector paths (`data/map-names-and-ids.js`) as well as the manually corrected list of paths and city names which was created by manually improving the result of said script ('data/names-and-ids.json`)
 ### `vendor/map.html`

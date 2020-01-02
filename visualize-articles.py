@@ -62,7 +62,11 @@ with open(filePaths['articlesPerCity'], 'w') as outfile:
 js = ''
 for key in articlesPerKey:
     articlesCount = len(articlesPerKey[key])
-    color = colorcodes.colorcode_by_argv(sys.argv[1], articlesCount, maxArticlesPerKey)
+    if (len(sys.argv) >= 2):
+        argv = sys.argv[1]
+    else:
+        argv = ''
+    color = colorcodes.colorcode_by_argv(argv, articlesCount, maxArticlesPerKey)
     js += '//' + mapIds[key] + ': ' + str(articlesCount) + '('+ str(articlesCount/maxArticlesPerKey) + ') articles\n'
     js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color + '\';\n'
     js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'

@@ -1,7 +1,8 @@
 import requests
 import json
+from config import filePaths
 
-filePath = './cache/cities.json'
+filePath = filePaths['cities']
 
 URL = 'https://www.aargauerzeitung.ch/__node__/__api__/cities'
 PARAMS = {'limit': 1000}
@@ -12,5 +13,4 @@ data: dict = r.json()
 with open(filePath, 'w') as outfile:
     json.dump(data, outfile)
 
-print(len(data['data']))
-print('Cities')
+print(str(len(data['data'])) + ' Cities')
