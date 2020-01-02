@@ -72,9 +72,19 @@ for city in cities['data']:
         for article in cityData:
             if (article['id'] not in articlesPerKey[key]):
                 articlesPerKey[key].append(article['id'])
-            else:
-                print('article already set: ' + article['title'])
         if (len(articlesPerKey[key]) > maxArticlesPerKey):
             maxArticlesPerKey = maxArticlesPerKey+len(articlesPerKey[key])
 with open(filePaths['articlesPerCity'], 'w') as outfile:
     json.dump(data, outfile)
+
+js = ''
+for key in articlesPerKey:
+    articlesCount = len(articlesPerKey[key])
+    color = (articlesCount/maxArticlesPerKey)* int('ffff',16)
+    color = format(int(color), 'X')
+    color = color.rjust(4, '0')
+    js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color +'FF\';\n'
+    js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'
+
+with open(filePaths['mapJs'], 'w') as outfile:
+    outfile.write(js)

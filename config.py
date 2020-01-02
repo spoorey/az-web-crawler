@@ -3,6 +3,7 @@ filePaths = dict(
     articlesPerCity='./cache/articles-per-city.json',
     articles='./cache/cities/',
     mapIds='./data/names-and-ids.json',
+    mapJs='./data/color-map.js'
 )
 
 maxArticlesPerCity = 250
