@@ -25,14 +25,16 @@ Then run these scripts in this order:
 2. `python crawl-news.py` To store the articles of the last three months for each city
 3. `python visualize-articles.py` To visualize the amount of articles on the map. optionally, add a an argument `blue` or `sqrt` (see `colorcodes.py`) e.g.: `python visualize-articles.py blue`
 
-Then open `data/map.html` in your browser.
+Then open `vendor/map.html` in your browser.
 
 ## File structure
 ### `cache` directory
 This directory contains cached versions of all the data required by the az api.
-### `data` directory
-This contains all data required to display the map. This includes a js script that was used to assign the city names to the vector paths (`data/map-names-and-ids.js`) as well as the manually corrected list of paths and city names which was created by manually improving the result of said script ('data/names-and-ids.json`)
 
+### `data` directory
+This contains all data required to display the map (`vendor/map.html`). This includes a js script that was used to assign the city names to the vector paths (`data/map-names-and-ids.js`) as well as the manually corrected list of paths and city names which was created by manually improving the result of said script ('data/names-and-ids.json`)
+### `vendor/map.html`
+This is a map converted from a vector file provided by [Kanton Aargau](https://www.ag.ch/de/dfr/geoportal/themenkarten/download/Kartendownload.jsp)
 ### `colorcodes.py`
 This contains a functions to calculate a colorcode based on the amount of articles about a city and the maximum amount of articles for a single city.
 ### `conda-environment.yaml`

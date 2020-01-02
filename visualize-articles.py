@@ -92,4 +92,4 @@ for key in articlesPerKey:
 
 with open(filePaths['mapJs'], 'w') as outfile:
     outfile.write(js)
-print('map ready, open data/map.html in your browser')
+print('map ready, open vendor/map.html in your browser')
