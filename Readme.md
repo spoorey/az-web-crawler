@@ -1,10 +1,11 @@
 # AZ-Crawler
-A script that crawls through the articles on aargauerzeitung.ch, displaying the amount of articles per municipality on a html map.
+A script that crawls through the articles on aargauerzeitung.ch, visualising the amount of articles per municipality on a html map.
 
 ## Setup
-It is recommended to use anaconda to run the script.
+It is recommended to use anaconda to run the script. An anaconda environment is included in the repository.
 Run these command to activate the anaconda environment:
 `conda env create -f conda-environment.yaml`
+
 `conda activate spoorey-azcrawler`
 
 Then run these scripts in this order:
