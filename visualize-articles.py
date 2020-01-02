@@ -3,7 +3,7 @@ import config
 from config import get_cache_path
 from config import filePaths
 import unidecode
-
+import math
 with open(filePaths['cities'], 'r') as file:
     cities = json.load(file)
 
@@ -38,6 +38,7 @@ for city in cities['data']:
             'Scherz': 'Lupfig',
             'Schinznach-Bad': 'Brugg',
             'Bozberg (Unter-/Oberbozberg, Linn, Gallenkirch)': 'Bozberg',
+            'Obersiggenthal (Nussbaumen)': 'Obersiggenthal',
         }
         if (cityName in replaceCityNames):
             cityName = replaceCityNames[cityName]
@@ -58,7 +59,6 @@ for city in cities['data']:
             'Nussbaumen',
             'Stusslingen',
             'Schonenwerd',
-            'Obersiggenthal (Nussbaumen)',
         ]
 
         if (cityName in solothurnCities):
@@ -73,18 +73,20 @@ for city in cities['data']:
             if (article['id'] not in articlesPerKey[key]):
                 articlesPerKey[key].append(article['id'])
         if (len(articlesPerKey[key]) > maxArticlesPerKey):
-            maxArticlesPerKey = maxArticlesPerKey+len(articlesPerKey[key])
+            maxArticlesPerKey = len(articlesPerKey[key])
 with open(filePaths['articlesPerCity'], 'w') as outfile:
     json.dump(data, outfile)
 
 js = ''
 for key in articlesPerKey:
     articlesCount = len(articlesPerKey[key])
-    color = (articlesCount/maxArticlesPerKey)* int('ffff',16)
+    color = (math.sqrt(articlesCount)/math.sqrt(maxArticlesPerKey))* int('ff',16)
     color = format(int(color), 'X')
-    color = color.rjust(4, '0')
-    js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color +'FF\';\n'
+    color = color.rjust(2, '0')
+    js += '//' + mapIds[key] + ': ' + str(articlesCount) + ' articles\n'
+    js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color  + color +'FF\';\n'
     js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'
 
 with open(filePaths['mapJs'], 'w') as outfile:
     outfile.write(js)
+print('map ready, open data/map.html in your browser')
