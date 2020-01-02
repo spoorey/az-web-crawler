@@ -5,6 +5,8 @@ This script is my personal project work for the `matl` module at the FHNW.
 
 ## How it works
 
+![Example map](data/example.png)
+
 These scripts work by first fetching all the required data using aargauerzeitung's json api.
 Then these articles are matched with a part of the html vector graphic in `data/map.html`, and a color is calculated based on the amount of articles per municipality.
 These colors are then displayed on the html map using javascript.
