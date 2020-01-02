@@ -59,13 +59,19 @@ data = sorted(data, key=lambda data: data['articles'],reverse=True)
 with open(filePaths['articlesPerCity'], 'w') as outfile:
     json.dump(data, outfile)
 
-js = ''
+js = 'document.getElementById(\'max-articles\').innerHTML=\'' + str(maxArticlesPerKey) + '\';\n'
+if (len(sys.argv) >= 2):
+    argv = sys.argv[1]
+else:
+    argv = ''
+maxColor = colorcodes.colorcode_by_argv(argv, maxArticlesPerKey, maxArticlesPerKey)
+minColor = colorcodes.colorcode_by_argv(argv, 0, maxArticlesPerKey)
+midColor =  colorcodes.colorcode_by_argv(argv, maxArticlesPerKey/2, maxArticlesPerKey)
+# color the gradient on the right
+js += 'document.getElementById(\'gradient\').style.backgroundImage = \'linear-gradient(to bottom, #' + maxColor + ', #'+ midColor + ', #' + minColor + ')\';\n'
+
 for key in articlesPerKey:
     articlesCount = len(articlesPerKey[key])
-    if (len(sys.argv) >= 2):
-        argv = sys.argv[1]
-    else:
-        argv = ''
     color = colorcodes.colorcode_by_argv(argv, articlesCount, maxArticlesPerKey)
     js += '//' + mapIds[key] + ': ' + str(articlesCount) + '('+ str(articlesCount/maxArticlesPerKey) + ') articles\n'
     js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color + '\';\n'
