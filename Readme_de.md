@@ -30,7 +30,7 @@ Danach `vendor/map.html` im browser öffnen.
 ## Dateistruktur
 ### `cache` Ordner
 Alle von der aargauerzeitung API bezogenen Daten oder vom Skript erstellten Dateien werden hier gecacht
-### `data` directory
+### `data` Ordner
 Enthält die Daten, die zur erstellung der Karte benötigt werden (`vendor/map.html`). Dies beinhaltet das skript, welches verwendet wurde um die Namen der Ortschaften den jeweiligen Teilen der Vektorgrafik zuzuordnen (`data/map-names-and-ids.js`) sowie das manuell korrigierte Resultat dieser Zuweisung (`data/names-and-ids.json`)
 ### `vendor/map.html`
 Dies ist eine konvertierte [vektor Datei](https://www.ag.ch/de/dfr/geoportal/themenkarten/download/Kartendownload.jsp) welche vom Kanton Aargau zur Verfügung gestellt wurde.
@@ -45,4 +45,4 @@ Lädt alle Ortschaften aus der API der AZ.
 ### `crawl-news.py`
 Lädt alle benötigten Artikel aus der API der AZ.
 ### `visualize-articles.py`
-Erstellt ein javscript zum einfärben der Karte.
+Erstellt ein Javscript zum einfärben der Karte.
