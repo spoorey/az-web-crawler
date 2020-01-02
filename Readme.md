@@ -16,6 +16,6 @@ Run these command to activate the anaconda environment:
 Then run these scripts in this order:
 1. `python crawl-cities.py` To store all the cities locally
 2. `python crawl-news.py` To store the articles of the last three months for each city
-3. `python visualize-articles.py` To visualize the amount of articles on the map
+3. `python visualize-articles.py` To visualize the amount of articles on the map. optionally, add a an argument `blue` or `sqrt` (see `colorcodes.py`) e.g.: `python visualize-articles.py blue`
 
 Then open `data/map.html` in your browser.
