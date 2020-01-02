@@ -42,13 +42,12 @@ for city in cities:
     articles = []
 
     page = 0
-    print('Loading ' + city['name'])
+    print('('+ str(i) +'/' + str(len(cities)) + ') ' + city['name'])
     while (True and len(articles)<=maxArticlesPerCity):
         # load next page
         page += 1
         time.sleep(0.5)
         url = baseUrl + str(city['id']) + '/seite/' + str(page)
-        print('('+ str(i) +'/' + str(len(cities)) + ') ' + city['name'])
 
         filePath = get_cache_path(city)
         r = requests.get(url, {})
@@ -62,5 +61,5 @@ for city in cities:
 
     with open(filePath, 'w') as outfile:
         json.dump(articles, outfile)
-        print(filePath)
+        print('saved to ' + filePath)
 

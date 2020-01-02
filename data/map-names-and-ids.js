@@ -1,18 +1,19 @@
-var spans = $('tspan');
-var paths = $('path');
-var pathIdsAndNames = {};
+spans = $('tspan');
+paths = $('path');
+pathIdsAndNames = {};
 spans.each(function (i, cSpan) {
     name = (cSpan.textContent).trim()
     cSpan = $('#' + cSpan.id);
-    var bestPath = null;
-    var bestDistance = 0;
+    bestPath = null;
+    bestDistance = 0;
+
     // find closest path
     paths.each(function (i, cPath) {
 
         bbox = document.getElementById(cPath.id).getBBox();
         cPath = $('#' + cPath.id);
 
-        var spanPosition = cSpan.position();
+        spanPosition = cSpan.position();
         if (
             spanPosition['top'] >= bbox['y']
             && spanPosition['top'] <= (bbox['y'] + bbox['height'])
@@ -31,7 +32,7 @@ spans.each(function (i, cSpan) {
             distance = distanceLT + distanceRB;
             //*/
 
-            var isShortestDistance = (distance < bestDistance)
+            isShortestDistance = (distance < bestDistance)
             if (isShortestDistance || null == bestPath) {
                 bestDistance = distance;
                 bestPath = cPath;
@@ -39,6 +40,7 @@ spans.each(function (i, cSpan) {
         }
     })
     if (bestPath == null) {
+        // no matching path was found, user must fix manually
         console.log('nothing for ' + name)
     } else {
         if (typeof pathIdsAndNames[bestPath.attr('id')] == 'undefined') {
@@ -51,9 +53,11 @@ spans.each(function (i, cSpan) {
 
     }
 });
+
+// for manual checks using browser console
 for (id in pathIdsAndNames) {
     $('#' + id).attr('name', pathIdsAndNames[id])
 }
 
-
+// this ouptut can be saved to the json file
 console.log(pathIdsAndNames);

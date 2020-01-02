@@ -28,42 +28,14 @@ for city in cities['data']:
             "city":city['name'],
             "articles": len(cityData)
         })
+        # Avoid problems with umlauts and the (AG)
         cityName = city['name'].replace(' (AG)', '')
         cityName = unidecode.unidecode(cityName)
 
-        #These cities have merged or are displayed as one on the map
-        replaceCityNames = {
-            'Aarau Rohr': 'Aarau',
-            'Attelwil': 'Reitnau',
-            'Kleindottingen': 'Bottstein',
-            'Hottwil': 'Mettauertal',
-            'Scherz': 'Lupfig',
-            'Schinznach-Bad': 'Brugg',
-            'Bozberg (Unter-/Oberbozberg, Linn, Gallenkirch)': 'Bozberg',
-            'Obersiggenthal (Nussbaumen)': 'Obersiggenthal',
-        }
-        if (cityName in replaceCityNames):
-            cityName = replaceCityNames[cityName]
-        
-        #These cities are in solothurn
-        solothurnCities = [
-            'Daniken',
-            'Dietikon',
-            'Dulliken',
-            'Eppenberg-Woschnau',
-            'Erlinsbach SO',
-            'Gretzenbach',
-            'Hagendorf',
-            'Kienberg',
-            'Lostorf',
-            'Niedergosgen',
-            'Obergosgen',
-            'Nussbaumen',
-            'Stusslingen',
-            'Schonenwerd',
-        ]
-
-        if (cityName in solothurnCities):
+        # replace or skip cities according to the map (merged cities, cities in solothurn etc.)
+        if (cityName in config.replaceCityNames):
+            cityName = config.replaceCityNames[cityName]
+        if (cityName in config.solothurnCities):
             continue
         if (cityName == 'Aarau'):
             continue
@@ -72,13 +44,18 @@ for city in cities['data']:
         if (key not in articlesPerKey):
             articlesPerKey[key] = []
 
-         # avoid duplicate article counts
+         # avoid duplicate article counts by checking the article id
         for article in cityData:
             if (article['id'] not in articlesPerKey[key]):
                 articlesPerKey[key].append(article['id'])
+
         if (len(articlesPerKey[key]) > maxArticlesPerKey):
             maxArticlesPerKey = len(articlesPerKey[key])
+
+# sort data by article count
 data = sorted(data, key=lambda data: data['articles'],reverse=True)  
+
+# output as json and javascript
 with open(filePaths['articlesPerCity'], 'w') as outfile:
     json.dump(data, outfile)
 
@@ -93,3 +70,8 @@ for key in articlesPerKey:
 with open(filePaths['mapJs'], 'w') as outfile:
     outfile.write(js)
 print('map ready, open vendor/map.html in your browser')
+print('The 10 cities with most articles are:')
+i = 0
+while (i < 11):
+    print(data[i]['city'] + ': ' + str(data[i]['articles']) + ' articles')
+    i=i+1
