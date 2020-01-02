@@ -1,7 +1,8 @@
 filePaths = dict(
     cities='./cache/cities.json',
     articlesPerCity='./cache/articles-per-city.json',
-    articles='./cache/cities/'
+    articles='./cache/cities/',
+    mapIds='./names-and-ids.json',
 )
 
 maxArticlesPerCity = 250
