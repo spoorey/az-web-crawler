@@ -10,7 +10,7 @@ r = requests.get(url = URL, params = PARAMS)
 # var dict data
 data: dict = r.json()
 
-with open(filePath, 'w') as outfile:
-    json.dump(data, outfile)
+with open(filePath, 'w', encoding='utf8') as outfile:
+    json.dump(data, outfile, ensure_ascii=False)
 
 print(str(len(data['data'])) + ' Cities')
