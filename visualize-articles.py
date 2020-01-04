@@ -37,7 +37,7 @@ for city in cities['data']:
             cityName = config.replaceCityNames[cityName]
         if (cityName in config.solothurnCities):
             continue
-        if (cityName == 'Aarau'):
+        if (cityName in config.ignoreCities):
             continue
 
         key = list(mapIds.keys())[list(mapIds.values()).index(cityName)]

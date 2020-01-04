@@ -18,7 +18,7 @@ replaceCityNames = {
     'Obersiggenthal (Nussbaumen)': 'Obersiggenthal',
 }
 
-#These cities are in solothurn, yet appear in aargauerzeitung's city list
+#These cities are in solothurn or zuerich, yet appear in aargauerzeitung's city list
 solothurnCities = [
     'Daniken',
     'Dietikon',
@@ -34,6 +34,14 @@ solothurnCities = [
     'Nussbaumen',
     'Stusslingen',
     'Schonenwerd',
+]
+
+
+# these cities have too many articles to be displayed on the map
+ignoreCities = [
+    'Aarau',
+    'Baden',
+    'Brugg',
 ]
 
 maxArticlesPerCity = 250
