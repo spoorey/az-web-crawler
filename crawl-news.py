@@ -22,7 +22,7 @@ def extract_articles(data, minTimestamp, maxAmount, articles):
     for entry in data['data']:
         created = entry['dc']['created'][:10]
         created = datetime.datetime.strptime(created, '%Y-%m-%d')
-        if (len(articles) > maxAmount) or (created < minTimestamp):
+        if (len(articles) >= maxAmount) or (created < minTimestamp):
             return articles
         articles.append(entry)
     return articles
@@ -43,7 +43,7 @@ for city in cities:
 
     page = 0
     print('('+ str(i) +'/' + str(len(cities)) + ') ' + city['name'])
-    while (True and len(articles)<=maxArticlesPerCity):
+    while (True and len(articles)<maxArticlesPerCity):
         # load next page
         page += 1
         print('page ' + str(page))
@@ -56,7 +56,7 @@ for city in cities:
 
         articles = extract_articles(data, threeMonthsAgo, maxArticlesPerCity, articles)
         created = get_first_created(data)
-        if (len(articles)>maxArticlesPerCity) or (created < threeMonthsAgo):
+        if (len(articles)>=maxArticlesPerCity) or (created < threeMonthsAgo):
             print('found ' + str(len(articles)) + ' articles since ' + threeMonthsAgo.isoformat())
             break
 
