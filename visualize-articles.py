@@ -6,7 +6,7 @@ import unidecode
 import colorcodes
 import sys
 
-with open(filePaths['cities'], 'r') as file:
+with open(filePaths['cities'], 'r', encoding='utf8') as file:
     cities = json.load(file)
 
 mapIds = []
@@ -18,6 +18,7 @@ with open(filePaths['mapIds'], 'r') as file:
 data = []
 articlesPerKey = {}
 maxArticlesPerKey = 0
+
 for city in cities['data']:
     filePath = get_cache_path(city)
 
@@ -70,6 +71,7 @@ midColor =  colorcodes.colorcode_by_argv(argv, maxArticlesPerKey/2, maxArticlesP
 # color the gradient on the right
 js += 'document.getElementById(\'gradient\').style.backgroundImage = \'linear-gradient(to bottom, #' + maxColor + ', #'+ midColor + ', #' + minColor + ')\';\n'
 
+# color the paths
 for key in articlesPerKey:
     articlesCount = len(articlesPerKey[key])
     color = colorcodes.colorcode_by_argv(argv, articlesCount, maxArticlesPerKey)
@@ -77,11 +79,14 @@ for key in articlesPerKey:
     js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color + '\';\n'
     js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'
 
-with open(filePaths['mapJs'], 'w') as outfile:
+
+table = '<table><tr><th>Ort</th><th>Anzahl Artikel (Maximum: ' + str(config.maxArticlesPerCity) + ')</th>'
+for city in data:
+    table += '<tr><td>' + city['city'] + '</td><td>' + str(city['articles']) + '</td>'
+table += '</table>'
+
+js += 'document.getElementById(\'article-count\').innerHTML = \'' + table + '\'\n'
+with open(filePaths['mapJs'], 'w', encoding='utf8') as outfile:
     outfile.write(js)
 print('map ready, open vendor/map.html in your browser')
 print('The 10 cities with most articles are:')
-i = 0
-while (i < 11):
-    print(data[i]['city'] + ': ' + str(data[i]['articles']) + ' articles')
-    i=i+1
