@@ -14,7 +14,21 @@ with open(filePaths['mapIds'], 'r') as file:
     mapIds = json.load(file)
     for key in mapIds:
         mapIds[key] = unidecode.unidecode(mapIds[key])
-            
+inhabitants = {}
+with open(filePaths['inhabitants'], 'r') as file:
+    file = json.load(file)
+    for key in file:
+        cityName = unidecode.unidecode(key)
+        cityName = cityName.replace(' (AG)', '')
+        inhabitants[cityName] = file[key]
+
+argv = {}
+for value in sys.argv:
+    split = value.split('=')
+    if (len(split)==2):
+        argv[split[0]] = split[1]
+
+perInhabitant = ('mode' in argv) and (argv['mode'] == 'per-inhabitant')
 data = []
 articlesPerKey = {}
 maxArticlesPerKey = 0
@@ -38,7 +52,7 @@ for city in cities['data']:
             cityName = config.replaceCityNames[cityName]
         if (cityName in config.solothurnCities):
             continue
-        if (cityName in config.ignoreCities):
+        if (not perInhabitant and cityName in config.ignoreCities):
             continue
 
         key = list(mapIds.keys())[list(mapIds.values()).index(cityName)]
@@ -50,8 +64,12 @@ for city in cities['data']:
             if (article['id'] not in articlesPerKey[key]):
                 articlesPerKey[key].append(article['id'])
 
-        if (len(articlesPerKey[key]) > maxArticlesPerKey):
-            maxArticlesPerKey = len(articlesPerKey[key])
+        cityInhabitants = inhabitants[cityName]
+        articlesCount = len(articlesPerKey[key])
+        if (perInhabitant):
+            articlesCount = articlesCount/cityInhabitants
+        if (articlesCount > maxArticlesPerKey):
+            maxArticlesPerKey = articlesCount
 
 # sort data by article count
 data = sorted(data, key=lambda data: data['articles'],reverse=True)  
@@ -60,33 +78,53 @@ data = sorted(data, key=lambda data: data['articles'],reverse=True)
 with open(filePaths['articlesPerCity'], 'w') as outfile:
     json.dump(data, outfile)
 
-js = 'document.getElementById(\'max-articles\').innerHTML=\'' + str(maxArticlesPerKey) + '\';\n'
-if (len(sys.argv) >= 2):
-    argv = sys.argv[1]
+if (perInhabitant):
+    perInhabitantText = ' pro Einwohner'
 else:
-    argv = ''
-maxColor = colorcodes.colorcode_by_argv(argv, maxArticlesPerKey, maxArticlesPerKey)
-minColor = colorcodes.colorcode_by_argv(argv, 0, maxArticlesPerKey)
-midColor =  colorcodes.colorcode_by_argv(argv, maxArticlesPerKey/2, maxArticlesPerKey)
+    perInhabitantText = ''
+
+js = 'document.getElementById(\'max-articles\').innerHTML=\'' + str(maxArticlesPerKey) + '\';\n'
+js += 'document.getElementById(\'title\').textContent += \''+ perInhabitantText + '\';\n'
+
+if ('color' in argv):
+    colorArg = argv['color']
+else:
+    colorArg = ''
+maxColor = colorcodes.colorcode_by_argv(colorArg, maxArticlesPerKey, maxArticlesPerKey)
+minColor = colorcodes.colorcode_by_argv(colorArg, 0, maxArticlesPerKey)
+midColor =  colorcodes.colorcode_by_argv(colorArg, maxArticlesPerKey/2, maxArticlesPerKey)
 # color the gradient on the right
 js += 'document.getElementById(\'gradient\').style.backgroundImage = \'linear-gradient(to bottom, #' + maxColor + ', #'+ midColor + ', #' + minColor + ')\';\n'
 
 # color the paths
 for key in articlesPerKey:
+    cityInhabitants = inhabitants[mapIds[key]]
+
     articlesCount = len(articlesPerKey[key])
-    color = colorcodes.colorcode_by_argv(argv, articlesCount, maxArticlesPerKey)
+    if (perInhabitant):
+        articlesCount = articlesCount/cityInhabitants
+
+    color = colorcodes.colorcode_by_argv(colorArg, articlesCount, maxArticlesPerKey)
     js += '//' + mapIds[key] + ': ' + str(articlesCount) + '('+ str(articlesCount/maxArticlesPerKey) + ') articles\n'
     js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color + '\';\n'
     js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'
 
 
-table = '<table><tr><th>Ort</th><th>Anzahl Artikel (Maximum: ' + str(config.maxArticlesPerCity) + ')</th>'
+table = '<table><tr><th>Ort</th><th>Anzahl Artikel'+ perInhabitantText + ' (Maximum: ' + str(config.maxArticlesPerCity) + ')</th>'
 for city in data:
-    table += '<tr><td>' + city['city'] + '</td><td>' + str(city['articles']) + '</td>'
+    articlesCount = city['articles']
+    cityName = city['city'].replace(' (AG)', '')
+    if (perInhabitant):
+        if (cityName in inhabitants):
+            articlesCount = articlesCount/inhabitants[cityName]
+            articlesCount = round(articlesCount, 3)
+        else:
+            articlesCount = 'n/a'
+
+    table += '<tr><td>' + city['city'] + '</td><td>' + str(articlesCount) + '</td>'
 table += '</table>'
 
 js += 'document.getElementById(\'article-count\').innerHTML = \'' + table + '\'\n'
 with open(filePaths['mapJs'], 'w', encoding='utf8') as outfile:
     outfile.write(js)
 print('map ready, open vendor/map.html in your browser')
-print('The 10 cities with most articles are:')

@@ -3,6 +3,7 @@ filePaths = dict(
     articlesPerCity='./cache/articles-per-city.json',
     articles='./cache/cities/',
     mapIds='./data/names-and-ids.json',
+    inhabitants='./data/inhabitants.json',
     mapJs='./cache/color-map.js'
 )
 
@@ -44,7 +45,7 @@ ignoreCities = [
     'Brugg',
 ]
 
-maxArticlesPerCity = 250
+maxArticlesPerCity = 300
 
 def get_cache_path(cityData):
     return filePaths['articles'] + str(cityData['id']) + '-' + cityData['urlpart'] + '.json'
