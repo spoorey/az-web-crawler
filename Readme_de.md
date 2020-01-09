@@ -23,7 +23,7 @@ Dieses kann wie folgt aktiviert werden:
 Anschliessend können folgende Skripts ausgeführt werden:
 1. `python crawl-cities.py` Alle Ortschaften lokal speichern
 2. `python crawl-news.py` Die benötigten Artikel cachen
-3. `python visualize-articles.py` Anzahl Artikel visualiseren. Mit dem Argument `color` kann optional die Färbung zu `blue` oder `sqrt` (siehe `colorcodes.py`) geändert werden: `python visualize-articles.py color=blue`
+3. `python visualize-articles.py` Anzahl Artikel visualiseren. Mit dem Argument `color` kann optional die Färbung zu `blue` (Blautöne) oder `log` (Logarithmische Skala) geändert werden: `python visualize-articles.py color=blue`
 Falls eine Visualisierung mit der Anzahl Artikel pro Einwohner gewünscht ist, kann diese mit `mode=per-inhabitant` erstellt werden.
 Die beiden Optionen können auch kombiniert werden: `python visualize-articles.py color=blue mode=per-inhabitant`
 
@@ -41,7 +41,7 @@ Beinhaltet Funktionen zum Berechnen der Farbe der jeweiligen Ortschaften auf der
 ### `conda-environment.yaml`
 Das anaconda environment welches für diese Skripts verwendet wird.
 ### `config.py`
-Beinhaltet grundlegende Konfigurationen.
+Beinhaltet grundlegende Konfigurationen. Einstellungen wie Ort des Cache-Ordners und ignorierte Ortschaften.
 ### `crawl-cities.py`
 Lädt alle Ortschaften aus der API der AZ.
 ### `crawl-news.py`

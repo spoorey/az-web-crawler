@@ -1,3 +1,4 @@
+// This script was used to assign the vector paths on the map with their respective name label. It can be run from the browser's console
 spans = $('tspan');
 paths = $('path');
 pathIdsAndNames = {};
@@ -7,7 +8,7 @@ spans.each(function (i, cSpan) {
     bestPath = null;
     bestDistance = 0;
 
-    // find closest path
+    // find closest fitting path for this label
     paths.each(function (i, cPath) {
 
         bbox = document.getElementById(cPath.id).getBBox();
@@ -21,9 +22,10 @@ spans.each(function (i, cSpan) {
             && spanPosition['left'] >= bbox['x']
             && spanPosition['left'] <= (bbox['x'] + bbox['width'])
         ) {
+            // calculate distance to the top left and bottom right corners of the path
             dy = spanPosition['top'] - bbox['y'];
             dx = spanPosition['left'] - bbox['x'];
-            distance = distanceLT = Math.sqrt((dy * dy) + (dx * dx));
+            distanceLT = Math.sqrt((dy * dy) + (dx * dx));
 
             dy = spanPosition['top'] - (bbox['y'] + bbox['height']);
             dx = spanPosition['left'] - (bbox['x'] + bbox['width']);
@@ -42,6 +44,7 @@ spans.each(function (i, cSpan) {
         // no matching path was found, user must fix manually
         console.log('nothing for ' + name)
     } else {
+        // add the label to the closest path. Some paths have multiple labels due to multiline names
         if (typeof pathIdsAndNames[bestPath.attr('id')] == 'undefined') {
             pathIdsAndNames[bestPath.attr('id')] = name;
         } else {
@@ -53,10 +56,10 @@ spans.each(function (i, cSpan) {
     }
 });
 
-// for manual checks using browser console
+// for manual checks using browser devtools
 for (id in pathIdsAndNames) {
     $('#' + id).attr('name', pathIdsAndNames[id])
 }
 
-// this ouptut can be saved to the json file
+// this ouptut can be saved to the names-and-ids.json file
 console.log(pathIdsAndNames);
