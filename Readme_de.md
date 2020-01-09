@@ -23,7 +23,9 @@ Dieses kann wie folgt aktiviert werden:
 Anschliessend können folgende Skripts ausgeführt werden:
 1. `python crawl-cities.py` Alle Ortschaften lokal speichern
 2. `python crawl-news.py` Die benötigten Artikel cachen
-3. `python visualize-articles.py` Anzahl Artikel visualiseren. Mit den Argumenten `blue` und `sqrt` (siehe `colorcodes.py`) kann die färbung angepasst werden: `python visualize-articles.py blue`
+3. `python visualize-articles.py` Anzahl Artikel visualiseren. Mit dem Argument `color` kann optional die Färbung zu `blue` oder `sqrt` (siehe `colorcodes.py`) geändert werden: `python visualize-articles.py color=blue`
+Falls eine Visualisierung mit der Anzahl Artikel pro Einwohner gewünscht ist, kann diese mit `mode=per-inhabitant` erstellt werden.
+Die beiden Optionen können auch kombiniert werden: `python visualize-articles.py color=blue mode=per-inhabitant`
 
 Danach `vendor/map.html` im browser öffnen.
 
