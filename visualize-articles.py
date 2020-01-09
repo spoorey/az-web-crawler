@@ -14,6 +14,8 @@ with open(filePaths['mapIds'], 'r') as file:
     mapIds = json.load(file)
     for key in mapIds:
         mapIds[key] = unidecode.unidecode(mapIds[key])
+
+# load inhabitant counts
 inhabitants = {}
 with open(filePaths['inhabitants'], 'r') as file:
     file = json.load(file)
@@ -22,6 +24,7 @@ with open(filePaths['inhabitants'], 'r') as file:
         cityName = cityName.replace(' (AG)', '')
         inhabitants[cityName] = file[key]
 
+# map console arguments
 argv = {}
 for value in sys.argv:
     split = value.split('=')
@@ -29,6 +32,7 @@ for value in sys.argv:
         argv[split[0]] = split[1]
 
 perInhabitant = ('mode' in argv) and (argv['mode'] == 'per-inhabitant')
+
 data = []
 articlesPerKey = {}
 maxArticlesPerKey = 0
@@ -43,6 +47,7 @@ for city in cities['data']:
             "city":city['name'],
             "articles": len(cityData)
         })
+
         # Avoid problems with umlauts and the (AG)
         cityName = city['name'].replace(' (AG)', '')
         cityName = unidecode.unidecode(cityName)
@@ -83,6 +88,7 @@ if (perInhabitant):
 else:
     perInhabitantText = ''
 
+# text titles
 js = 'document.getElementById(\'max-articles\').innerHTML=\'' + str(maxArticlesPerKey) + '\';\n'
 js += 'document.getElementById(\'title\').textContent += \''+ perInhabitantText + '\';\n'
 
@@ -93,6 +99,7 @@ else:
 maxColor = colorcodes.colorcode_by_argv(colorArg, maxArticlesPerKey, maxArticlesPerKey)
 minColor = colorcodes.colorcode_by_argv(colorArg, 0, maxArticlesPerKey)
 midColor =  colorcodes.colorcode_by_argv(colorArg, maxArticlesPerKey/2, maxArticlesPerKey)
+
 # color the gradient on the right
 js += 'document.getElementById(\'gradient\').style.backgroundImage = \'linear-gradient(to bottom, #' + maxColor + ', #'+ midColor + ', #' + minColor + ')\';\n'
 
@@ -105,11 +112,13 @@ for key in articlesPerKey:
         articlesCount = articlesCount/cityInhabitants
 
     color = colorcodes.colorcode_by_argv(colorArg, articlesCount, maxArticlesPerKey)
+    # for each path: name of city, absolute amount of articles (or articles per inhabitant), share of articles (defines color shade)
     js += '//' + mapIds[key] + ': ' + str(articlesCount) + '('+ str(articlesCount/maxArticlesPerKey) + ') articles\n'
     js += 'document.getElementById(\'' + key + '\').style.fill = \'#' + color + '\';\n'
     js +=  'document.getElementById(\'' + key + '\').style.fillOpacity = 1\n'
 
 
+# add a table with all the data
 table = '<table><tr><th>Ort</th><th>Anzahl Artikel'+ perInhabitantText + ' (Maximum: ' + str(config.maxArticlesPerCity) + ')</th>'
 for city in data:
     articlesCount = city['articles']

@@ -13,6 +13,7 @@ spans.each(function (i, cSpan) {
         bbox = document.getElementById(cPath.id).getBBox();
         cPath = $('#' + cPath.id);
 
+        // span must be within the path
         spanPosition = cSpan.position();
         if (
             spanPosition['top'] >= bbox['y']
@@ -24,13 +25,11 @@ spans.each(function (i, cSpan) {
             dx = spanPosition['left'] - bbox['x'];
             distance = distanceLT = Math.sqrt((dy * dy) + (dx * dx));
 
-            ///*
             dy = spanPosition['top'] - (bbox['y'] + bbox['height']);
             dx = spanPosition['left'] - (bbox['x'] + bbox['width']);
             distanceRB = Math.sqrt((dy * dy) + (dx * dx));
 
             distance = distanceLT + distanceRB;
-            //*/
 
             isShortestDistance = (distance < bestDistance)
             if (isShortestDistance || null == bestPath) {
