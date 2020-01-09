@@ -10,7 +10,8 @@ Dieses Skript is meine persönliche Arbeit für das Modul `matl` an der FHNW.
 In einem ersten Schritt werden alle benötigten Daten von der JSON-API der Aargauerzeitung heruntergeladen.
 Diese Artikel werden dann zum jeweiligen Teil der Vektorgrafik in  `data/map.html` zugewiesen, und der Teil wird mit einer Farbe, basierend auf der Anzahl Artikel über diese Gemeinde eingefärbt, was mit Javascript umgesetzt wurde.
 
-Da für Aarau, Brugg und Baden eine sehr grosse Anzahl an Artikeln veröffentlich wurde, werden diese nicht speziell eingefärbt. Diese Einstellung kann in `config.py` angepasst werden.
+Da für Aarau, Brugg und Baden eine sehr grosse Anzahl an Artikeln veröffentlich wurde, werden diese bei der Visualisierung der totalen Anzahl nicht speziell eingefärbt. Diese Einstellung kann in `config.py` angepasst werden. Bei der Anzeige der Artikel pro Einwohner werden sie normal eingefärbt.
+Um die Werte für diese Orte korrekt darzustellen, muss auch das Limit üfr Artikel pro Ortschaft in der Konfigurationsdatei erhöht, und anschliessend die Artikel zumindest für Aarau erneut eingelesen werden.
 
 ## Skript ausführen
 Es wird empfohlen das Skript mit anacodna auszuführen. Eine Anaconde Environment ist im Repository enthalten.

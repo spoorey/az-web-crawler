@@ -12,7 +12,8 @@ This script is my personal project work for the `matl` module at the FHNW.
 These scripts work by first fetching all the required data using aargauerzeitung's json api.
 Then these articles are matched with a part of the html vector graphic in `data/map.html`, and a color is calculated based on the amount of articles per municipality.
 These colors are then displayed on the html map using javascript.
-Due to the massive amount of articles for the cities of Aarau, Brugg and Baden, they are not included in the visualization. This can be changed in `config.py`.
+Due to the massive amount of articles for the cities of Aarau, Brugg and Baden, they are not included in the visualization of the total amount of articles. This can be changed in `config.py`.
+If you wish to display the amount of articles for these cities correctly, you should increase the maximum amount of articles in the config file and recrawl the news.
 
 ## Running the script
 It is recommended to use anaconda to run the script. An anaconda environment is included in the repository.
